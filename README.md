@@ -53,6 +53,7 @@ Also, for configuring the SonarQube keys you can follow the next [steps](https:/
 | URL of SonarQube server                                    | SONAR_URL              |
 | Key of the project on the SonarQube server                 | SONAR_PROJECT_KEY      |
 | Token generated of the project in the SonarQube server     | SONAR_TOKEN            |
+| GitHub personal access token to run the auto-merge task    | GH_PERMISSIONS_TOKEN   |
 
 
 ## Running with Docker
@@ -152,6 +153,7 @@ This is the suggested scaffolding for this project. You can take a look at:
 - [express-rate-limit](https://github.com/nfriedly/express-rate-limit) - Basic rate-limiting middleware used to limit repeated requests to public APIs
 - [morgan](https://github.com/expressjs/morgan) - HTTP request logger middleware for node.js
 - [nodemailer](github.com/nodemailer/nodemailer) - Module for Node.js to allow the easy email sending. 
+- [typedi](https://github.com/typestack/typedi) - Module to manage the DI
 
 ## Code Quality
 
