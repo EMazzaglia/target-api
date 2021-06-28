@@ -5,42 +5,37 @@ import { Service } from 'typedi';
 
 @Service()
 export class JWTService {
-  async createJWT(user: User): Promise<string> {
-    return new Promise((resolve, reject) => {
-      try {
-        const token = jwt.sign(
-          { data: { userId: user.id, email: user.email } },
-          JWT_SECRET || '',
-          { expiresIn: ACCESS_TOKEN_LIFE || '6h' }
-        );
-        resolve(token);
-      } catch (error) {
-        reject(new Error('Error creating JWT'));
-      }
-    });
-  }
-
-  async decodeJWT(token: string):
-    Promise<string | { [key: string]: any } | null> {
-    return new Promise((resolve, reject) => {
-      try {
-        const decoded = jwt.decode(token);
-        resolve(decoded);
-      } catch (error) {
-        reject(new Error('Error decoding JWT'));
-      }
+  createJWT(user: User): string {
+    let token;
+    try {
+      token = jwt.sign(
+        { data: { userId: user.id, email: user.email } },
+        JWT_SECRET || '',
+        { expiresIn: ACCESS_TOKEN_LIFE || '6h' }
+      );
+    } catch (error) {
+      new Error('Error creating JWT');
     }
-    );
+    return token;
   }
 
-  async verifyJWT(token = ''): Promise<string | { [key: string]: any } | null> {
-    return new Promise((resolve, reject) => {
+  decodeJWT(token: string): string | { [key: string]: any } | null {
+    let decoded;
+    try {
+      decoded = jwt.decode(token);
+    } catch (error) {
+      new Error('Error decoding JWT');
+    }
+    return decoded;
+  }
+
+  verifyJWT(token = ''): string | { [key: string]: any } | null {
+      let verify;
       try {
-        const verify = jwt.verify(token, JWT_SECRET || '');
-        resolve(verify);
+        verify = jwt.verify(token, JWT_SECRET || '');
       } catch (error) {
-        reject(new Error('Error verifying JWT'));
+        new Error('Error verifying JWT');
       }
-    });
+      return verify;
   }
 }

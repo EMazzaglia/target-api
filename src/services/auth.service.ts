@@ -13,10 +13,10 @@ export class AuthorizationService {
     return this.instance;
   }
 
-  async authorizationChecker(
+  authorizationChecker(
     action: Action,
     _roles: string[]
-  ): Promise<boolean> {
+  ): boolean {
     const jwt = Container.get(JWTService);
     let token = action.request.headers['authorization'];
     if (!token) {
@@ -29,7 +29,7 @@ export class AuthorizationService {
     }
 
     try {
-      const payload = await jwt.verifyJWT(token);
+      const payload = jwt.verifyJWT(token);
       return payload !== null;
     } catch (error) {
       return false;

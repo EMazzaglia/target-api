@@ -15,7 +15,7 @@ describe('requesting all users', () => {
 
   beforeEach(async () => {
     user = await factory(User)().create();
-    token = await jwtService.createJWT(user);
+    token = jwtService.createJWT(user);
   });
 
   it('returns http code 401 without authentication token', async () => {

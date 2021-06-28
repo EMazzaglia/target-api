@@ -13,7 +13,7 @@ import { controllers } from '@controllers';
 import { swaggerSpec } from './swagger';
 import { DOCS_ENABLED } from '@config';
 
-// required by routing-controllers
+// required by routing-controllers to manage DI
 useContainer(Container);
 
 // Create express server

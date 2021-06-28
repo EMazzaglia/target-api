@@ -152,6 +152,8 @@ This is the suggested scaffolding for this project. You can take a look at:
 - [express-rate-limit](https://github.com/nfriedly/express-rate-limit) - Basic rate-limiting middleware used to limit repeated requests to public APIs
 - [morgan](https://github.com/expressjs/morgan) - HTTP request logger middleware for node.js
 - [nodemailer](github.com/nodemailer/nodemailer) - Module for Node.js to allow the easy email sending. 
+- [typedi](https://github.com/typestack/typedi) - Module to manage dependency injection for TS and JS.
+
 
 ## Code Quality
 
