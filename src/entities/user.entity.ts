@@ -31,4 +31,9 @@ export class User extends Base {
   @Column({ select: false })
   @IsNotEmpty()
   password!: string;
+
+  @Column()
+  @IsString()
+  @IsNotEmpty()
+  gender!:string;
 }

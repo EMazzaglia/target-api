@@ -1,3 +1,4 @@
+import { type } from '@ormconfig';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateUserEntity1606158886329 implements MigrationInterface {
@@ -23,6 +24,10 @@ export class CreateUserEntity1606158886329 implements MigrationInterface {
           },
           {
             name: 'email',
+            type: 'varchar'
+          },
+          {
+            name: 'gender',
             type: 'varchar'
           },
           {

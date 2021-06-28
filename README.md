@@ -42,6 +42,11 @@ Run `yarn typeorm migration:revert` to rollback migrations.
 
 Run `yarn typeorm migration:show` to see the list of all migrations (pending and also ran).
 
+Run `yarn dev:db` to setup the database using the dev environment variables.
+
+Run `yarn test:db` to setup the database using the test environment variables.
+
+Run `yarn prod:db` to setup the database using the prod environment variables.
 
 ## Github Actions
 Our CI workflow is based on [Github Actions](https://docs.github.com/en/actions/learn-github-actions/introduction-to-github-actions), for this, we need to set several secret keys for integrated with some services like SonarQube or databases for example.
