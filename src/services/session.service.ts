@@ -13,7 +13,7 @@ export class SessionService {
   private readonly userRepository = getRepository<User>(User);
 
   createUserEntity(notValidatedUser: SignUpUser) {
-    if (notValidatedUser.password === notValidatedUser.confirmedPassword) {
+    if (notValidatedUser.password === notValidatedUser.validationPassword) {
       const firstName = notValidatedUser.firstName;
       const lastName = notValidatedUser.lastName;
       const email = notValidatedUser.email;

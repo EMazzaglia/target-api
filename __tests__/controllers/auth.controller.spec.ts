@@ -11,7 +11,7 @@ describe('creating an account', () => {
   it('returns http code 200 whith valid params', async () => {
     const signUpUser = new SignUpUser();
     signUpUser.password = 'pw12345678';
-    signUpUser.confirmedPassword = 'pw12345678';
+    signUpUser.validationPassword = 'pw12345678';
     signUpUser.email = 'user@gmail.com';
     signUpUser.gender = 'male';
     signUpUser.firstName = 'emi';
@@ -20,7 +20,7 @@ describe('creating an account', () => {
       .post(`${API}/auth/signup`)
       .send(signUpUser);
     expect(response.status).toBe(200);
-    expect(response.body).not.toHaveProperty('password');
+    expect(response.body).not.toHaveProperty('pw12345678');
   });
 
   it('returns http code 400 whith invalid params', async () => {
