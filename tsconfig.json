@@ -16,6 +16,7 @@
       "@database/*": ["src/database/*"],
       "@entities/*": ["src/entities/*"],
       "@interfaces": ["src/interfaces/index"],
+      "@domain/*": ["src/domain/*"],
       "@middlewares": ["src/middlewares"],
       "@services/*": ["src/services/*"],
       "@constants/*": ["src/constants/*"],

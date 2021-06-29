@@ -4,7 +4,7 @@ import { User } from '@entities/user.entity';
 import { UsersService } from '@services/users.service';
 import { getRepository } from 'typeorm';
 import { AuthInterface } from '@interfaces';
-import { SignUpUser } from 'src/domain/SignUpUser';
+import { SignUpUser } from '@domain/signUpUser';
 
 @Service()
 export class SessionService {

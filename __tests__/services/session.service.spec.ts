@@ -1,6 +1,6 @@
 import { Container } from 'typedi';
 import { SessionService } from '@services/session.service';
-import { SignUpUser } from '../../src/domain/SignUpUser';
+import { SignUpUser } from '@domain/signUpUser';
 import { Errors } from '@constants/errorMessages';
 import { clear } from 'console';
 

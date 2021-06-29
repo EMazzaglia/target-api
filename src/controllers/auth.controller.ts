@@ -11,7 +11,7 @@ import omit from 'lodash/omit';
 import { Service } from 'typedi';
 import { SessionService } from '@services/session.service';
 import { Errors } from '@constants/errorMessages';
-import { SignUpUser } from '../domain/SignUpUser';
+import { SignUpUser } from '@domain/signUpUser';
 
 @JsonController('/auth')
 @Service()

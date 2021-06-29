@@ -14,7 +14,7 @@ export class SignUpUser {
   password!: string;
 
   @IsNotEmpty()
-  confirmedPassword!: string;
+  validationPassword!: string;
 
   @IsString()
   @IsNotEmpty()
