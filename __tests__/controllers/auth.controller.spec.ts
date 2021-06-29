@@ -5,13 +5,20 @@ import { User } from '@entities/user.entity';
 import { RATE_LIMIT_MAX_REQUESTS } from '@config';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { API } from '../utils';
+import { SignUpUser } from '../../src/domain/SignUpUser';
 
 describe('creating an account', () => {
   it('returns http code 200 whith valid params', async () => {
-    const userFields = await factory(User)().make();
+    const signUpUser = new SignUpUser();
+    signUpUser.password = 'pw12345678';
+    signUpUser.confirmedPassword = 'pw12345678';
+    signUpUser.email = 'user@gmail.com';
+    signUpUser.gender = 'male';
+    signUpUser.firstName = 'emi';
+    signUpUser.lastName = 'mamamama'
     const response = await request(app)
       .post(`${API}/auth/signup`)
-      .send(userFields);
+      .send(signUpUser);
     expect(response.status).toBe(200);
     expect(response.body).not.toHaveProperty('password');
   });
