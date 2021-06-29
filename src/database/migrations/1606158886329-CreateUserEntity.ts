@@ -1,4 +1,3 @@
-import { type } from '@ormconfig';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateUserEntity1606158886329 implements MigrationInterface {

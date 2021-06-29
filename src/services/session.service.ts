@@ -4,12 +4,31 @@ import { User } from '@entities/user.entity';
 import { UsersService } from '@services/users.service';
 import { getRepository } from 'typeorm';
 import { AuthInterface } from '@interfaces';
+import { SignUpUser } from 'src/domain/SignUpUser';
 
 @Service()
 export class SessionService {
   constructor(private readonly userService: UsersService) {}
 
   private readonly userRepository = getRepository<User>(User);
+
+  createUserEntity(notValidatedUser: SignUpUser) {
+    if (notValidatedUser.password === notValidatedUser.confirmedPassword) {
+      const firstName = notValidatedUser.firstName;
+      const lastName = notValidatedUser.lastName;
+      const email = notValidatedUser.email;
+      const gender = notValidatedUser.gender;
+      const password = notValidatedUser.password;
+      const user = new User();
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.email = email;
+      user.gender = gender;
+      user.password = password;
+      return user;
+    }
+    throw new Error(Errors.PASSWORDS_NOT_MATCH);
+  }
 
   async signUp(user: User) {
     let newUser: User;

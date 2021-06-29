@@ -3,7 +3,7 @@ import { define } from 'typeorm-seeding';
 import { User } from '@entities/user.entity';
 import { genSaltSync, hashSync } from 'bcrypt';
 
-let genders = [ 'female' , 'male' ];
+const genders = ['female', 'male'];
 
 define(User, (faker: typeof Faker) => {
   const firstName = faker.name.firstName();
