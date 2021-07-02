@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
+  MinLength,
   validateOrReject
 } from 'class-validator';
 
@@ -30,6 +31,7 @@ export class User extends Base {
 
   @Column({ select: false })
   @IsNotEmpty()
+  @MinLength(6)
   password!: string;
 
   @Column()

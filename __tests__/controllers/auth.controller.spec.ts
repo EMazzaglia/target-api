@@ -5,26 +5,36 @@ import { User } from '@entities/user.entity';
 import { RATE_LIMIT_MAX_REQUESTS } from '@config';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { API } from '../utils';
-import { SignUpUser } from '@domain/signUpUser';
 
 describe('creating an account', () => {
   it('returns http code 200 whith valid params', async () => {
-    const signUpUser = new SignUpUser();
-    signUpUser.password = 'pw12345678';
-    signUpUser.validationPassword = 'pw12345678';
-    signUpUser.email = 'user@gmail.com';
-    signUpUser.gender = 'male';
-    signUpUser.firstName = 'emi';
-    signUpUser.lastName = 'mamamama'
+    const userFields = await factory(User)().make();
     const response = await request(app)
       .post(`${API}/auth/signup`)
-      .send(signUpUser);
+      .send(userFields);
     expect(response.status).toBe(200);
-    expect(response.body).not.toHaveProperty('pw12345678');
+    expect(response.body).not.toHaveProperty('password');
   });
 
   it('returns http code 400 whith invalid params', async () => {
     const userFields = {};
+    const response = await request(app)
+      .post(`${API}/auth/signup`)
+      .send(userFields);
+    expect(response.status).toBe(400);
+    expect(response.body).toStrictEqual(
+      expect.objectContaining({
+        errMessage: expect.any(String),
+        errCode: expect.any(Number)
+      })
+    );
+  });
+
+  it('returns http code 400 whith no gender defined', async () => {
+    const userFields = {
+      email:'testemail@email.com',
+      password:'holahola'
+    }
     const response = await request(app)
       .post(`${API}/auth/signup`)
       .send(userFields);
