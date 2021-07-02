@@ -17,7 +17,7 @@ export class SessionService {
       this.userService.hashUserPassword(user);
       newUser = await this.userRepository.save(user);
     } catch (error) {
-      throw new Error(error.message ?? Errors.MISSING_PARAMS);
+      throw new Error(error.detail ?? Errors.MISSING_PARAMS);
     }
     return newUser;
   }
