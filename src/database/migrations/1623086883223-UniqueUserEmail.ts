@@ -13,6 +13,10 @@ export class UniqueUserEmail1623086883223 implements MigrationInterface {
     await queryRunner.query(
       'CREATE UNIQUE INDEX "IDX_e12875dfb3b1d92d7d7c5377e2" ON "user" ("email") '
     );
+
+    await queryRunner.query(
+      "CREATE TYPE status AS ENUM ('confirmed', 'pending')"
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

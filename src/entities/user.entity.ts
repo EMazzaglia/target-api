@@ -37,5 +37,10 @@ export class User extends Base {
   @Column()
   @IsString()
   @IsNotEmpty()
+  status!: string;
+
+  @Column()
+  @IsString()
+  @IsNotEmpty()
   gender!:string;
 }

@@ -17,6 +17,7 @@ define(User, (faker: typeof Faker) => {
   user.lastName = lastName;
   user.email = email;
   user.gender = gender;
+  user.status = 'confirmed';
 
   user.password = hashSync(password, genSaltSync());
 
