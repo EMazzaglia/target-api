@@ -2,16 +2,18 @@ import {
   JsonController,
   Body,
   Post,
-  BodyParam,
-  UnauthorizedError,
-  BadRequestError,
+  Req,
+  Authorized,
   Res
 } from 'routing-controllers';
 import omit from 'lodash/omit';
 import { Service } from 'typedi';
 import { SessionService } from '@services/session.service';
-import { Errors } from '@constants/errorMessages';
-import { User } from '@entities/user.entity';
+import { Request } from 'express';
+import { EntityMapper } from '@utils/mapper/entityMapper.service';
+import { BaseUserDTO } from '@dto/baseUserDTO';
+import { SignUpDTO } from '@dto/signUpDTO';
+import { LogoutDTO } from '@dto/logoutDTO';
 
 @JsonController('/auth')
 @Service()
@@ -20,36 +22,35 @@ export class AuthController {
 
   @Post('/signup')
   async signUp(
-    @Body({ validate: false }) user: User,
+    @Body({ validate: true }) user: SignUpDTO,
     @Res() response: any
   ) {
-    try {
-      const newUser = await this.sessionService.signUp(user);
-      return response.send(omit(newUser, ['password']));
-    } catch (error) {
-      if (error?.message === Errors.MISSING_PARAMS) {
-        throw new BadRequestError(Errors.MISSING_PARAMS);
-      } else {
-        throw new BadRequestError(error?.message);
-      }
-    }
+    const newUser = await this.sessionService.signUp(
+      EntityMapper.mapTo(User, user)
+    );
+    return response.send(omit(newUser, ['password']));
   }
 
   @Post('/signin')
-  async signIn(
-    @BodyParam('email') email: string,
-    @BodyParam('password') password: string
+  async signIn(@Body({ validate: true }) signInDTO: BaseUserDTO) {
+    const token = await this.sessionService.signIn(signInDTO);
+    return { token };
+  }
+
+  @Authorized()
+  @Post('/logout')
+  async logOut(
+    @Body({ validate: true }) logOutDTO: LogoutDTO,
+    @Req() request: Request
   ) {
-    try {
-      const token = await this.sessionService.signIn({ email, password });
-      return { token };
-    } catch (error) {
-      switch (error?.message) {
-        case Errors.MISSING_PARAMS:
-          throw new BadRequestError(Errors.MISSING_PARAMS);
-        default:
-          throw new UnauthorizedError(Errors.INVALID_CREDENTIALS);
-      }
-    }
+    const token = request.headers['authorization'] as string;
+    const email = logOutDTO.email;
+    const tokenAddToBlacklist: number = await this.sessionService.logOut({
+      email,
+      token
+    });
+    return {
+      logout: !!tokenAddToBlacklist
+    };
   }
 }

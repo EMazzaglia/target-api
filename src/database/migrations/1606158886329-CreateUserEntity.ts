@@ -34,6 +34,10 @@ export class CreateUserEntity1606158886329 implements MigrationInterface {
             type: 'varchar'
           },
           {
+            name: 'gender',
+            type: 'enum'
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()'
