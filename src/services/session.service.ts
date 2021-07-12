@@ -4,6 +4,7 @@ import { User } from '@entities/user.entity';
 import { UsersService } from '@services/users.service';
 import { getRepository } from 'typeorm';
 import { AuthInterface } from '@interfaces';
+import { DatabaseError } from 'src/dto/error/databaseError';
 
 @Service()
 export class SessionService {
@@ -12,16 +13,13 @@ export class SessionService {
   private readonly userRepository = getRepository<User>(User);
 
   async signUp(user: User) {
-    let newUser: User;
-
     try {
       this.userService.hashUserPassword(user);
-      newUser = await this.userRepository.save(user);
+      await this.userRepository.save(user);
+      return user;
     } catch (error) {
-      throw new Error(error.detail ?? Errors.MISSING_PARAMS);
+      throw new DatabaseError(error.message + ' ' + error.detail);
     }
-
-    return newUser;
   }
 
   async signIn(input: AuthInterface.ISignInInput) {

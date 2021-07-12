@@ -12,24 +12,19 @@ import { Service } from 'typedi';
 import { User } from '@entities/user.entity';
 import { SessionService } from '@services/session.service';
 import { Errors } from '@constants/errorMessages';
-
+import { UserDTO } from 'src/dto/userDTO';
+import { classToPlain, plainToClass } from 'class-transformer';
 @JsonController('/auth')
 @Service()
 export class AuthController {
   constructor(private readonly sessionService: SessionService) {}
 
   @Post('/signup')
-  async signUp(@Body({ validate: false }) user: User, @Res() response: any) {
-    try {
-      const newUser = await this.sessionService.signUp(user);
-      return response.send(omit(newUser, ['password']));
-    } catch (error) {
-      if (error?.message === Errors.MISSING_PARAMS) {
-        throw new BadRequestError(Errors.MISSING_PARAMS);
-      } else {
-        throw new BadRequestError(error?.message);
-      }
-    }
+  async signUp(@Body({ validate: true }) user: UserDTO, @Res() response: any) {
+    const userJSON = classToPlain(user);
+    const entityUser: User = plainToClass(User, userJSON);
+    const newUser = await this.sessionService.signUp(entityUser);
+    return response.send(omit(newUser, ['password']));
   }
 
   @Post('/signin')
