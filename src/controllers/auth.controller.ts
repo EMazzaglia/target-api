@@ -13,7 +13,7 @@ import { User } from '@entities/user.entity';
 import { SessionService } from '@services/session.service';
 import { Errors } from '@constants/errorMessages';
 import { UserDTO } from 'src/dto/userDTO';
-import { classToPlain, plainToClass } from 'class-transformer';
+import { EntityMapper } from '@services/entityMapper.service';
 @JsonController('/auth')
 @Service()
 export class AuthController {
@@ -21,9 +21,9 @@ export class AuthController {
 
   @Post('/signup')
   async signUp(@Body({ validate: true }) user: UserDTO, @Res() response: any) {
-    const userJSON = classToPlain(user);
-    const entityUser: User = plainToClass(User, userJSON);
-    const newUser = await this.sessionService.signUp(entityUser);
+    const newUser = await this.sessionService.signUp(
+      EntityMapper.mapTo(User, user)
+    );
     return response.send(omit(newUser, ['password']));
   }
 
