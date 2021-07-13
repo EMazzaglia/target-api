@@ -24,8 +24,9 @@ describe('creating an account', () => {
     expect(response.status).toBe(400);
     expect(response.body).toStrictEqual(
       expect.objectContaining({
-        errMessage: expect.any(String),
-        errCode: expect.any(Number)
+        description: expect.any(String),
+        httpCode: expect.any(Number),
+        name: expect.any(String)
       })
     );
   });
@@ -65,8 +66,9 @@ describe('creating a session', () => {
     expect(response.status).toBe(401);
     expect(response.body).toStrictEqual(
       expect.objectContaining({
-        errMessage: expect.any(String),
-        errCode: expect.any(Number)
+        description: expect.any(String),
+        httpCode: expect.any(Number),
+        name: expect.any(String)
       })
     );
   });

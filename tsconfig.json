@@ -22,7 +22,9 @@
       "@utils/*": ["src/utils/*"],
       "@app": ["src/app"],
       "@ormconfig": ["ormconfig"],
-      "@views": ["src/views"]
+      "@views": ["src/views"],
+      "@exception/*": ["src/exception/*"],
+      "@dto/*": ["src/dto/*"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

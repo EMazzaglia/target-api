@@ -23,8 +23,9 @@ describe('requesting all users', () => {
     expect(response.status).toBe(401);
     expect(response.body).toStrictEqual(
       expect.objectContaining({
-        errMessage: expect.any(String),
-        errCode: expect.any(Number)
+        description: expect.any(String),
+        httpCode: expect.any(Number),
+        name: expect.any(String)
       })
     );
   });
@@ -36,8 +37,9 @@ describe('requesting all users', () => {
     expect(response.status).toBe(401);
     expect(response.body).toStrictEqual(
       expect.objectContaining({
-        errMessage: expect.any(String),
-        errCode: expect.any(Number)
+        description: expect.any(String),
+        httpCode: expect.any(Number),
+        name: expect.any(String)
       })
     );
   });
@@ -75,8 +77,9 @@ describe('requesting a user', () => {
     expect(response.status).toBe(404);
     expect(response.body).toStrictEqual(
       expect.objectContaining({
-        errMessage: expect.any(String),
-        errCode: expect.any(Number)
+        description: expect.any(String),
+        httpCode: expect.any(Number),
+        name: expect.any(String)
       })
     );
   });
@@ -117,7 +120,7 @@ describe('creating a user', () => {
       .post(`${API}/users`)
       .send(userFields);
     expect(failingResponse.status).toBe(400);
-    expect(failingResponse.body?.errMessage).toMatch(REGEX.DB_INDEX_ERROR);
+    expect(failingResponse.body?.description).toMatch(REGEX.DB_INDEX_ERROR);
 
     expect(await userRepo.count()).toBe(1);
   });

@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '../../constants/httpStatusCode';
+import { HttpStatusCode } from '@constants/httpStatusCode';
 
 // eslint-disable-next-line
 //Information on captureStackTrace https://stackoverflow.com/questions/59625425/understanding-error-capturestacktrace-and-stack-trace-persistance

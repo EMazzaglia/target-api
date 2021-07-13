@@ -12,7 +12,7 @@ import { Service } from 'typedi';
 import { User } from '@entities/user.entity';
 import { SessionService } from '@services/session.service';
 import { Errors } from '@constants/errorMessages';
-import { UserDTO } from 'src/dto/userDTO';
+import { UserDTO } from '@dto/userDTO';
 import { EntityMapper } from '@services/entityMapper.service';
 @JsonController('/auth')
 @Service()

@@ -1,6 +1,6 @@
 import { Errors } from '@constants/errorMessages';
-import { BaseError } from './baseError';
-import { HttpStatusCode } from '../../constants/httpStatusCode';
+import { BaseError } from './base.error';
+import { HttpStatusCode } from '../constants/httpStatusCode';
 
 export class DatabaseError extends BaseError {
   constructor(description) {
