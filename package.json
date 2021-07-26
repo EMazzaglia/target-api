@@ -11,7 +11,7 @@
     "prod": "ENV=prod node -r ./prod-paths.js ./dist/src/server.js",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "posttypeorm": "prettier -w src/database/migrations",
-    "test": "ENV=test jest --runInBand --useStderr",
+    "test": "ENV=test jest --runInBand --useStderr --silent=false",
     "test:cover": "yarn test --coverage",
     "test:ci": "ENV=ci jest --coverage",
     "db:setup": "yarn typeorm schema:sync && yarn seed:run",
@@ -19,7 +19,10 @@
     "lint": "eslint \"src/**\" --color",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dev:db": "ENV=dev yarn db:setup",
+    "test:db": "ENV=test yarn db:setup",
+    "prod:db": "ENV=prod yarn db:setup"
   },
   "jestSonar": {
     "reportPath": "__tests__",

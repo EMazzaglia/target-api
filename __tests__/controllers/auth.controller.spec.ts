@@ -29,6 +29,23 @@ describe('creating an account', () => {
       })
     );
   });
+
+  it('returns http code 400 whith no gender defined', async () => {
+    const userFields = {
+      email:'testemail@email.com',
+      password:'holahola'
+    }
+    const response = await request(app)
+      .post(`${API}/auth/signup`)
+      .send(userFields);
+    expect(response.status).toBe(400);
+    expect(response.body).toStrictEqual(
+      expect.objectContaining({
+        errMessage: expect.any(String),
+        errCode: expect.any(Number)
+      })
+    );
+  });
 });
 
 describe('creating a session', () => {

@@ -13,14 +13,12 @@ export class SessionService {
 
   async signUp(user: User) {
     let newUser: User;
-
     try {
       this.userService.hashUserPassword(user);
       newUser = await this.userRepository.save(user);
     } catch (error) {
       throw new Error(error.detail ?? Errors.MISSING_PARAMS);
     }
-
     return newUser;
   }
 

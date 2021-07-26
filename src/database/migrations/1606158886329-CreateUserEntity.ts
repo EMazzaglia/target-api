@@ -26,6 +26,10 @@ export class CreateUserEntity1606158886329 implements MigrationInterface {
             type: 'varchar'
           },
           {
+            name: 'gender',
+            type: 'varchar'
+          },
+          {
             name: 'password',
             type: 'varchar'
           },

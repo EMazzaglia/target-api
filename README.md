@@ -9,8 +9,8 @@ This project includes the boilerplate for a basic rest-api made in Node.JS with 
 3. Install required dependencies by `yarn`
 4. `cp .example.env .env.dev`
 5. `cp .example.env.test .env.test`
-6. Create your DB (i.e. psql for Postgres: `psql -U <user> -h <host> -c "create database <db name>;"`) with same name as your .env file.
-7. Run `ENV=[dev, test, prod] yarn migration:run`.
+6. Create your DB (i.e. psql for Postgres: `psql -U <user> -h <host> -c "create database <db name>;"`) with same name of the TYPEORM_DATABASE property inside of the .env file.
+7. Run `yarn [dev,test,prod]:db`.
 8. Start your server with `ENV=[dev, prod] yarn dev`.
 
 ## Some scripts
@@ -42,6 +42,11 @@ Run `yarn typeorm migration:revert` to rollback migrations.
 
 Run `yarn typeorm migration:show` to see the list of all migrations (pending and also ran).
 
+Run `yarn dev:db` to setup the database using the dev environment variables.
+
+Run `yarn test:db` to setup the database using the test environment variables.
+
+Run `yarn prod:db` to setup the database using the prod environment variables.
 
 ## Github Actions
 Our CI workflow is based on [Github Actions](https://docs.github.com/en/actions/learn-github-actions/introduction-to-github-actions), for this, we need to set several secret keys for integrated with some services like SonarQube or databases for example.
@@ -53,6 +58,7 @@ Also, for configuring the SonarQube keys you can follow the next [steps](https:/
 | URL of SonarQube server                                    | SONAR_URL              |
 | Key of the project on the SonarQube server                 | SONAR_PROJECT_KEY      |
 | Token generated of the project in the SonarQube server     | SONAR_TOKEN            |
+| GitHub personal access token to run the auto-merge task    | GH_PERMISSIONS_TOKEN   |
 
 
 ## Running with Docker
@@ -152,6 +158,7 @@ This is the suggested scaffolding for this project. You can take a look at:
 - [express-rate-limit](https://github.com/nfriedly/express-rate-limit) - Basic rate-limiting middleware used to limit repeated requests to public APIs
 - [morgan](https://github.com/expressjs/morgan) - HTTP request logger middleware for node.js
 - [nodemailer](github.com/nodemailer/nodemailer) - Module for Node.js to allow the easy email sending. 
+- [typedi](https://github.com/typestack/typedi) - Module to manage the DI
 
 ## Code Quality
 
