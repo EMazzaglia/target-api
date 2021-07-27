@@ -3,6 +3,7 @@ import { User } from '@entities/user.entity';
 import { JWT_SECRET, ACCESS_TOKEN_LIFE, JWT_SECRET_DEFAULT } from '@config';
 import { Service } from 'typedi';
 import { AuthInterface } from '@interfaces';
+import { ErrorsMessages } from '@constants/errorMessages';
 
 @Service()
 export class JWTService {
@@ -16,7 +17,7 @@ export class JWTService {
         );
         resolve(token);
       } catch (error) {
-        reject(new Error('Error creating JWT'));
+        reject(new Error(ErrorsMessages.JWT_CREATE_ERROR));
       }
     });
   }
@@ -29,7 +30,7 @@ export class JWTService {
         const decoded = jwt.decode(token);
         resolve(decoded);
       } catch (error) {
-        reject(new Error('Error decoding JWT'));
+        reject(new Error(ErrorsMessages.JWT_DECODE_ERROR));
       }
     });
   }
@@ -43,7 +44,7 @@ export class JWTService {
         ) as AuthInterface.ITokenPayload;
         resolve(decoded);
       } catch (error) {
-        reject(new Error('Error verifying JWT'));
+        reject(new Error(ErrorsMessages.JWT_VALIDATION_ERROR));
       }
     });
   }

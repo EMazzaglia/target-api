@@ -10,7 +10,7 @@ export class BaseError extends Error {
   public readonly description: string;
 
   constructor(name: string, httpCode: HttpStatusCode, description: string) {
-    super(description);
+    super(name);
     Object.setPrototypeOf(this, new.target.prototype);
 
     this.httpCode = httpCode;
