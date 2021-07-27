@@ -14,6 +14,7 @@ import { EntityMapper } from '@utils/mapper/entityMapper.service';
 import { BaseUserDTO } from '@dto/baseUserDTO';
 import { SignUpDTO } from '@dto/signUpDTO';
 import { LogoutDTO } from '@dto/logoutDTO';
+import { User } from '@entities/user.entity';
 
 @JsonController('/auth')
 @Service()

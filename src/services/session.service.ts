@@ -20,20 +20,12 @@ export class SessionService {
   private readonly userRepository = getRepository<User>(User);
 
   async signUp(user: User) {
-<<<<<<< HEAD
-    let newUser: User;
-=======
->>>>>>> e4dacc6 (Default exception handler)
     try {
       this.userService.hashUserPassword(user);
       return await this.userRepository.save(user);
     } catch (error) {
       throw new DatabaseError(error.message + ' ' + error.detail);
     }
-<<<<<<< HEAD
-    return newUser;
-=======
->>>>>>> e4dacc6 (Default exception handler)
   }
 
   async signIn(input: AuthInterface.ISignInInput) {
