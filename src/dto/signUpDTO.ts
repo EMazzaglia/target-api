@@ -1,4 +1,4 @@
-import { UserGender } from '@constants/user.gender';
+import { UserGender } from '@entities/user.entity';
 import { IsEnum, IsString } from 'class-validator';
 import { BaseUserDTO } from './baseUserDTO';
 

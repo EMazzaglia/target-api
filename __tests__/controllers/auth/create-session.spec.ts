@@ -19,7 +19,7 @@ describe('creating a session', () => {
     password = 'password123';
   });
 
-  it('returns http code 200 whith valid params', async () => {
+  it('returns http code 200 with valid params', async () => {
     const authFields = {
       email,
       password
@@ -29,7 +29,8 @@ describe('creating a session', () => {
       .send(authFields);
     expect(response.status).toBe(200);
   });
-  it('returns http code 401 whith invalid params', async () => {
+
+  it('returns http code 401 with invalid params', async () => {
     const authFields = {
       email: 'r4nD0m@3M4Il.com',
       password: 'r4Nd0mPa55w0rD'
@@ -39,9 +40,9 @@ describe('creating a session', () => {
       .send(authFields);
     expect(response.status).toBe(401);
     expect(response.body).toStrictEqual({
-      description: ErrorsMessages.INVALID_CREDENTIALS,
+      name: ErrorsMessages.INVALID_CREDENTIALS_NAME,
       httpCode: HttpStatusCode.UNAUTHORIZED,
-      name: 'Error'
+      description: ErrorsMessages.INVALID_CREDENTIALS_DESC
     });
   });
 });

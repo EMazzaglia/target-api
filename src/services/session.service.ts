@@ -7,8 +7,7 @@ import { RedisService } from '@services/redis.service';
 import { AuthInterface } from '@interfaces';
 import { DatabaseError } from '@exception/database.error';
 import { RedisError } from '@exception/redis.error';
-import { HttpError } from 'routing-controllers';
-import { HttpStatusCode } from '@constants/httpStatusCode';
+import { UnAuthorizedError } from '@exception/unauthorized.error';
 
 @Service()
 export class SessionService {
@@ -38,9 +37,9 @@ export class SessionService {
         .where({ email })
         .getOneOrFail();
     } catch (error) {
-      throw new HttpError(
-        HttpStatusCode.UNAUTHORIZED,
-        ErrorsMessages.INVALID_CREDENTIALS
+      throw new UnAuthorizedError(
+        ErrorsMessages.INVALID_CREDENTIALS_NAME,
+        ErrorsMessages.INVALID_CREDENTIALS_DESC
       );
     }
 
@@ -50,9 +49,9 @@ export class SessionService {
         userPassword: user.password
       })
     ) {
-      throw new HttpError(
-        HttpStatusCode.UNAUTHORIZED,
-        ErrorsMessages.INVALID_CREDENTIALS
+      throw new UnAuthorizedError(
+        ErrorsMessages.INVALID_CREDENTIALS_NAME,
+        ErrorsMessages.INVALID_CREDENTIALS_DESC
       );
     }
 

@@ -28,7 +28,7 @@ describe('creating a user', () => {
     expect(response.body).toStrictEqual({
       description: ErrorsMessages.BODY_ERRORS,
       httpCode: HttpStatusCode.BAD_REQUEST,
-      errors: ['Property email must be an email'],
+      errors: [ErrorsMessages.EMAIL_ERROR],
       name: ErrorsMessages.BAD_REQUEST_ERROR
     });
   });
@@ -48,11 +48,10 @@ describe('creating a user', () => {
     });
   });
 
-  it('returns http code 400 if user email already exists', async () => {
-    const userFields = await factory(User)().create();
+  it('when repeated email is used to create a user, returns http code 500', async () => {
+    const userFields = await factory(User)().make();
 
     const userRepo = getRepository<User>(User);
-    userRepo.clear();
 
     const validResponse = await request(app)
       .post(`${API}/users`)

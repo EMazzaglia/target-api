@@ -18,3 +18,9 @@ export class User extends Base {
   @Column()
   gender!: string;
 }
+
+export enum UserGender {
+  MALE = 'Male',
+  FEMALE = 'Female',
+  OTHER = 'Other'
+}

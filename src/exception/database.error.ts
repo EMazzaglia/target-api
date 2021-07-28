@@ -5,7 +5,7 @@ import { HttpStatusCode } from '../constants/httpStatusCode';
 export class DatabaseError extends BaseError {
   constructor(description) {
     super(
-      ErrorsMessages.INTERNAL_SERVER_ERROR,
+      ErrorsMessages.DATABASE_ERROR,
       HttpStatusCode.INTERNAL_SERVER,
       description
     );

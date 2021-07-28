@@ -1,6 +1,7 @@
 import { DEV_ENV } from '@config';
 import { ErrorsMessages } from '@constants/errorMessages';
 import { HttpStatusCode } from '@constants/httpStatusCode';
+import { BaseError } from '@exception/base.error';
 import { ValidationError } from 'class-validator';
 import { Request, Response } from 'express';
 import {
@@ -45,7 +46,6 @@ export class ErrorMiddleware implements ExpressErrorMiddlewareInterface {
         });
       });
     } else {
-      // If it's not a 400, then it will not have multiple errors.
       responseObject.errors = undefined;
       responseObject.name = error.name; // The name will apear always
       if (error.httpCode) {
@@ -55,17 +55,15 @@ export class ErrorMiddleware implements ExpressErrorMiddlewareInterface {
         responseObject.httpCode = HttpStatusCode.INTERNAL_SERVER;
         res.status(HttpStatusCode.INTERNAL_SERVER);
       }
+      if (error instanceof BaseError) {
+        // All our errors should extends from BaseError that extends from Error
+        responseObject.description = error.description;
+      } else if (error.message) {
+        // If aren't instances of BaseError then are Errors and have an error message.
+        responseObject.description = error.message;
+      }
       if (DEV_ENV) {
         responseObject.stack = error.stack;
-      }
-      if (error instanceof Error) {
-        // All our errors should extends from BaseError that extends from Error
-        responseObject.description = error.message;
-      } else if (typeof error === 'string') {
-        responseObject.description = error;
-      }
-      if (responseObject.description === '') {
-        responseObject.description = undefined;
       }
     }
     res.json(responseObject);

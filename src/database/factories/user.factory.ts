@@ -1,7 +1,6 @@
 import * as Faker from 'faker';
 import { define } from 'typeorm-seeding';
-import { User } from '@entities/user.entity';
-import { UserGender } from '@constants/user.gender';
+import { User, UserGender } from '@entities/user.entity';
 
 define(User, (faker: typeof Faker) => {
   const firstName = faker.name.firstName();
