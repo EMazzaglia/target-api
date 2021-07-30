@@ -40,7 +40,7 @@ describe('creating an account', () => {
         ErrorsMessages.EMAIL_ERROR
       ],
       httpCode: HttpStatusCode.BAD_REQUEST,
-      name: 'Bad request error'
+      name: ErrorsMessages.BAD_REQUEST_ERROR
     });
     expect(response.body.errors).toHaveLength(4);
     done();
