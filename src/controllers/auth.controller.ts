@@ -4,7 +4,9 @@ import {
   Post,
   Req,
   Authorized,
-  Res
+  Res,
+  Get,
+  Params
 } from 'routing-controllers';
 import omit from 'lodash/omit';
 import { Service } from 'typedi';
@@ -53,5 +55,13 @@ export class AuthController {
     return {
       logout: !!tokenAddToBlacklist
     };
+  }
+
+  @Get('/:id/:validationHash')
+  async validateUser(@Params() params: any) {
+    this.sessionService.validateUser({
+      id: params.id,
+      hash: params.validationHash
+    });
   }
 }

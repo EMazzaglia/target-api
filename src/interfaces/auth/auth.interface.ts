@@ -19,6 +19,11 @@ export interface ITokenPayload {
   exp: number;
 }
 
+export interface IValidateUser {
+  id: number;
+  hash: string;
+}
+
 type TokenPayloadData = {
   userId: number;
   email: string;

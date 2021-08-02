@@ -17,6 +17,9 @@ export class User extends Base {
 
   @Column()
   gender!: string;
+
+  @Column({ default: false })
+  status!: boolean;
 }
 
 export enum UserGender {

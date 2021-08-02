@@ -8,6 +8,7 @@ define(User, (faker: typeof Faker) => {
   const email = faker.internet.email(firstName, lastName);
   const password = faker.internet.password(8);
   const gender = UserGender.FEMALE;
+  const status = true;
 
   const user = new User();
   user.firstName = firstName;
@@ -15,6 +16,7 @@ define(User, (faker: typeof Faker) => {
   user.email = email;
   user.password = password;
   user.gender = gender;
+  user.status = status;
 
   return user;
 });
