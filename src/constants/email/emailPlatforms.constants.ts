@@ -1,4 +1,4 @@
 export enum EmailPlatforms {
-  SES = 'SES',
-  SENDGRID = 'SENDGRID'
+  SES = 'SES'
+  // SENDGRID = 'SENDGRID'
 }

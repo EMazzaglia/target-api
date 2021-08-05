@@ -10,14 +10,13 @@ import { RedisError } from '@exception/redis.error';
 import { UnAuthorizedError } from '@exception/unauthorized.error';
 import Jwt from 'jsonwebtoken';
 import { InternalServerError } from 'routing-controllers';
-import { EmailService } from './email.service';
-import { IEmail } from 'src/interfaces/email/email.interface';
+import { EmailService } from './email/email.service';
+import { SignUpConfirmationEmail } from './email/SignUpConfirmationEmail';
 @Service()
 export class SessionService {
   constructor(
     private readonly userService: UsersService,
-    private readonly redisService: RedisService,
-    private readonly emailService: EmailService
+    private readonly redisService: RedisService
   ) {}
 
   private readonly userRepository = getRepository<User>(User);
@@ -27,19 +26,8 @@ export class SessionService {
       const inactiveUser = await this.userRepository.save(
         this.createUserEntity(user)
       );
-      const url =
-        'http://localhost:3000/api/v1/auth/' +
-        `${inactiveUser.id}/${inactiveUser.activationCode}`;
-      const email: IEmail = {
-        from: 'emilianomazzaglia@gmail.com',
-        to: inactiveUser.email,
-        subject: 'Confirmation Email',
-        text:
-          'Please click on the following URL to active your account: \n' + url
-      };
-
       // TODO: Check the implementation, we could take some sender as default
-      EmailService.sendEmail(email, 'SES');
+      EmailService.sendEmail(new SignUpConfirmationEmail(inactiveUser));
       return inactiveUser;
     } catch (error) {
       throw new DatabaseError(error.message + ' ' + error.detail);

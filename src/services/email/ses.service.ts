@@ -1,6 +1,6 @@
 import * as aws from 'aws-sdk';
 import { Service } from 'typedi';
-import { AWS_ID, AWS_SECRET, SES_API_VERSION, AWS_REGION } from '../config';
+import { AWS_ID, AWS_SECRET, SES_API_VERSION, AWS_REGION } from '../../config';
 
 aws.config.update({
   accessKeyId: AWS_ID as string,
