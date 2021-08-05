@@ -1,48 +1,45 @@
 import { ErrorsMessages } from '@constants/errorMessages';
 import { Service } from 'typedi';
 import { getRepository } from 'typeorm';
-import { User } from '@entities/user.entity';
+import { User, UserStatus } from '@entities/user.entity';
 import { UsersService } from '@services/users.service';
 import { RedisService } from '@services/redis.service';
 import { AuthInterface } from '@interfaces';
 import { DatabaseError } from '@exception/database.error';
 import { RedisError } from '@exception/redis.error';
 import { UnAuthorizedError } from '@exception/unauthorized.error';
-import { ValidateUser } from '@entities/validateUser.entity';
-// import { EmailService } from './email.service';
-// import { IEmail } from 'src/interfaces/email/email.interface';
+import Jwt from 'jsonwebtoken';
+import { InternalServerError } from 'routing-controllers';
+import { EmailService } from './email.service';
+import { IEmail } from 'src/interfaces/email/email.interface';
 @Service()
 export class SessionService {
   constructor(
     private readonly userService: UsersService,
-    private readonly redisService: RedisService
+    private readonly redisService: RedisService,
+    private readonly emailService: EmailService
   ) {}
 
   private readonly userRepository = getRepository<User>(User);
-  private readonly validateUserRepository =
-    getRepository<ValidateUser>(ValidateUser);
 
   async signUp(user: User) {
     try {
-      this.userService.hashUserPassword(user);
-      const inactiveUser = await this.userRepository.save(user);
-      const validationHash = 'holaCharola';
-      this.validateUserRepository.save({
-        id: inactiveUser.id,
-        validationHash: validationHash
-      });
-      // const url =
-      //   'http://localhost:3000/api/v1/auth/' +
-      //   `${inactiveUser.id}/${validationHash}`;
-      // const email: IEmail = {
-      //   from: 'emilianomazzaglia@gmail.com',
-      //   to: inactiveUser.email,
-      //   subject: 'Confirmation Email',
-      //   text: 'Please click on the following URL: ' + url
-      // };
+      const inactiveUser = await this.userRepository.save(
+        this.createUserEntity(user)
+      );
+      const url =
+        'http://localhost:3000/api/v1/auth/' +
+        `${inactiveUser.id}/${inactiveUser.activationCode}`;
+      const email: IEmail = {
+        from: 'emilianomazzaglia@gmail.com',
+        to: inactiveUser.email,
+        subject: 'Confirmation Email',
+        text:
+          'Please click on the following URL to active your account: \n' + url
+      };
 
       // TODO: Check the implementation, we could take some sender as default
-      // await EmailService.sendEmail(email, 'SES');
+      EmailService.sendEmail(email, 'SES');
       return inactiveUser;
     } catch (error) {
       throw new DatabaseError(error.message + ' ' + error.detail);
@@ -52,21 +49,23 @@ export class SessionService {
   async validateUser(validationUser: AuthInterface.IValidateUser) {
     try {
       // Retrieve the user from the table if the hash is valid.
-      await this.validateUserRepository.findOneOrFail({
+      await this.userRepository.findOneOrFail({
         where: {
-          userId: validationUser.id,
-          validationHash: validationUser.hash
+          id: validationUser.id,
+          activationCode: validationUser.token
         }
       });
 
       // If the user exists and the hash is valid, update the status to active.
       await this.userRepository.update(
         { id: validationUser.id },
-        { status: true }
+        { status: UserStatus.ACTIVE }
       );
-      return 'Account activated successfully!';
+      return { message: 'Account activated successfully!' };
     } catch (error: any) {
-      throw new Error('Pasaron cosas en la validacion.');
+      throw new InternalServerError(
+        'An error ocurred during the validation of the account'
+      );
     }
   }
 
@@ -109,5 +108,12 @@ export class SessionService {
       throw new RedisError(ErrorsMessages.REDIS_ERROR_SET_TOKEN);
     }
     return tokenAddedToBlacklist;
+  }
+
+  createUserEntity(user: User) {
+    this.userService.hashUserPassword(user);
+    const token = Jwt.sign({ email: user.email }, 'node-base-secret');
+    user.activationCode = token;
+    return user;
   }
 }

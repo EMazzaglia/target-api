@@ -21,7 +21,7 @@ export interface ITokenPayload {
 
 export interface IValidateUser {
   id: number;
-  hash: string;
+  token: string;
 }
 
 type TokenPayloadData = {

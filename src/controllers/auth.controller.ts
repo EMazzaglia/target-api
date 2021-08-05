@@ -31,7 +31,7 @@ export class AuthController {
     const newUser = await this.sessionService.signUp(
       EntityMapper.mapTo(User, user)
     );
-    return response.send(omit(newUser, ['password']));
+    return response.send(omit(newUser, ['password', 'activationCode']));
   }
 
   @Post('/signin')
@@ -57,11 +57,11 @@ export class AuthController {
     };
   }
 
-  @Get('/:id/:validationHash')
+  @Get('/:id/:token')
   async validateUser(@Params() params: any) {
-    this.sessionService.validateUser({
+    return this.sessionService.validateUser({
       id: params.id,
-      hash: params.validationHash
+      token: params.token
     });
   }
 }

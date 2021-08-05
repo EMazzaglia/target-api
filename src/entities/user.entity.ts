@@ -18,12 +18,20 @@ export class User extends Base {
   @Column()
   gender!: string;
 
-  @Column({ default: false })
-  status!: boolean;
+  @Column({ default: 'Inactive' })
+  status!: string;
+
+  @Column()
+  activationCode?: string;
 }
 
 export enum UserGender {
   MALE = 'Male',
   FEMALE = 'Female',
   OTHER = 'Other'
+}
+
+export enum UserStatus {
+  INACTIVE = 'Inactive',
+  ACTIVE = 'Active',
 }

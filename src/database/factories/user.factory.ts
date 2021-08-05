@@ -1,6 +1,6 @@
 import * as Faker from 'faker';
 import { define } from 'typeorm-seeding';
-import { User, UserGender } from '@entities/user.entity';
+import { User, UserGender, UserStatus } from '@entities/user.entity';
 
 define(User, (faker: typeof Faker) => {
   const firstName = faker.name.firstName();
@@ -8,7 +8,8 @@ define(User, (faker: typeof Faker) => {
   const email = faker.internet.email(firstName, lastName);
   const password = faker.internet.password(8);
   const gender = UserGender.FEMALE;
-  const status = true;
+  const status = UserStatus.INACTIVE;
+  const activationCode = 'bearer12312312313';
 
   const user = new User();
   user.firstName = firstName;
@@ -17,6 +18,7 @@ define(User, (faker: typeof Faker) => {
   user.password = password;
   user.gender = gender;
   user.status = status;
+  user.activationCode = activationCode;
 
   return user;
 });

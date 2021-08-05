@@ -52,7 +52,7 @@ export class EmailService {
     });
   }
 
-  static async sendEmail(email: EmailInterface.IEmail, emailPlatform: string) {
+  static async sendEmail(email: EmailInterface.IEmail, emailPlatform = 'SES') {
     try {
       const transporter: Transporter<SentMessageInfo> =
         transporterMapper[emailPlatform];

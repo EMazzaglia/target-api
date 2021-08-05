@@ -38,6 +38,14 @@ export class CreateUserEntity1606158886329 implements MigrationInterface {
             type: 'enum'
           },
           {
+            name: 'status',
+            type: 'enum'
+          },
+          {
+            name: 'activationCode',
+            type: 'varchar'
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()'
