@@ -3,7 +3,7 @@ import { SendEmailRequest } from 'aws-sdk/clients/ses';
 
 export class SignUpConfirmationEmail implements SendEmailRequest {
   Destination;
-  Source = 'emiliano.mazzaglia@rootstrap.com'; // Hardcoded source for now, needs refactor
+  Source = process.env.AWS_VERIFIED_EMAIL || '';
   Message;
 
   constructor(inactiveUser: User) {

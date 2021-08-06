@@ -16,7 +16,8 @@ import { SignUpConfirmationEmail } from './email/SignUpConfirmationEmail';
 export class SessionService {
   constructor(
     private readonly userService: UsersService,
-    private readonly redisService: RedisService
+    private readonly redisService: RedisService,
+    private readonly emailService: EmailService
   ) {}
 
   private readonly userRepository = getRepository<User>(User);
@@ -27,7 +28,7 @@ export class SessionService {
         this.createUserEntity(user)
       );
       // TODO: Check the implementation, we could take some sender as default
-      EmailService.sendEmail(new SignUpConfirmationEmail(inactiveUser));
+      this.emailService.sendEmail(new SignUpConfirmationEmail(inactiveUser));
       return inactiveUser;
     } catch (error) {
       throw new DatabaseError(error.message + ' ' + error.detail);
@@ -36,7 +37,6 @@ export class SessionService {
 
   async validateUser(validationUser: AuthInterface.IValidateUser) {
     try {
-      // Retrieve the user from the table if the hash is valid.
       await this.userRepository.findOneOrFail({
         where: {
           id: validationUser.id,
@@ -44,7 +44,7 @@ export class SessionService {
         }
       });
 
-      // If the user exists and the hash is valid, update the status to active.
+      // If the user exists and the token is valid, update the status to active.
       await this.userRepository.update(
         { id: validationUser.id },
         { status: UserStatus.ACTIVE }
