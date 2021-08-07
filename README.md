@@ -55,13 +55,9 @@ Run `yarn prod:db` to setup the database using the prod environment variables.
 ## Github Actions
 Our CI workflow is based on [Github Actions](https://docs.github.com/en/actions/learn-github-actions/introduction-to-github-actions), for this, we need to set several secret keys for integrated with some services like SonarQube or databases for example.
 To configure these keys in the GitHub repo, you can follow the next [guideline](https://docs.github.com/en/actions/learn-github-actions/security-hardening-for-github-actions#using-secrets).
-Also, for configuring the SonarQube keys you can follow the next [steps](https://github.com/rootstrap/node-ts-api-base/wiki/SonarQube-Setup).
 | Action                                                     | Secret Key             |
 |------------------------------------------------------------|------------------------|
 | Password for the database that is used in the testing step | TEST_POSTGRES_PASSWORD |
-| URL of SonarQube server                                    | SONAR_URL              |
-| Key of the project on the SonarQube server                 | SONAR_PROJECT_KEY      |
-| Token generated of the project in the SonarQube server     | SONAR_TOKEN            |
 | GitHub personal access token to run the auto-merge task    | GH_PERMISSIONS_TOKEN   |
 
 
@@ -72,7 +68,7 @@ In order to run the app with Docker, you should install or update to the latest 
 
 ### Development with Docker
 
-The following commands will build and run all you need to start working on the base, without any other installation requirements. Important: if you already have postgres running locally, you'll need to kill the service before run `docker-compose up`.
+The following commands will build and run all you need to start working on the project, without any other installation requirements. Important: if you already have postgres running locally, you'll need to kill the service before run `docker-compose up`.
 
 ```
 docker-compose --env-file .env.dev build
@@ -81,6 +77,18 @@ docker-compose --env-file .env.dev build
 ```
 docker-compose --env-file .env.dev up
 ```
+
+### Configure PgAdmin4 
+1.Run the following command that will start a pgadmin instance on localhost:5050.
+
+```
+docker run --rm -p 5050:5050 thajeztah/pgadmin4
+```
+
+2.Go to create Servers, create server... 
+3.Configure the connection tab host value with you IP as a host. 
+4.Give the server a name on the general tab and then hit save.
+
 
 ### Deployment with Docker (only for production)
 
@@ -105,8 +113,6 @@ Add the following line before the command ` RUN yarn ` in the Dockerfile.
 ```
 RUN apk --no-cache add --virtual builds-deps build-base python
 ```
-
-
 
 ## API Documentation
 
@@ -151,7 +157,6 @@ This is the suggested scaffolding for this project. You can take a look at:
 
 ## Dependencies
 
-- [AdminBro](https://adminbro.com/) - Admin panel middleware.
 - [routing-controllers](https://github.com/typestack/routing-controllers) - Create structured class-based controllers with decorators usage in Express.
 - [routing-controllers-openapi](https://www.npmjs.com/package/routing-controllers-openapi) - Runtime OpenAPI v3 schema generation for routing-controllers.
 - [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) - Serves auto-generated swagger-ui API docs from express.
@@ -164,21 +169,7 @@ This is the suggested scaffolding for this project. You can take a look at:
 - [nodemailer](github.com/nodemailer/nodemailer) - Module for Node.js to allow the easy email sending. 
 - [typedi](https://github.com/typestack/typedi) - Module to manage the DI
 
-## Code Quality
-
-This repo is integrated with SonarQube for static code analysis and test coverage reporting. [This guide](https://www.notion.so/rootstrap/SonarQube-c87fcaef3fbe4d7995ad087486768a24#a59df288a98c4410807c02c2d381ec6a) covers all the steps, including how to run the test coverage on a local machine.
-Use the provided `sonar-project.properties` as-is.
-Once that is covered:
-1. Run `yarn test:cover` to run tests with coverage reporting.
-2. Run `sonar-scanner` to import the test results into the sonar dashboard.
-
 ## Docs
 
 [Express documentation](https://expressjs.com/es/)
 [Typescript documentation](https://www.typescriptlang.org/)
-
-## Credits
-
-**Express API Base** is maintained by [Rootstrap](http://www.rootstrap.com) with the help of our [contributors](https://github.com/rootstrap/express-api-base/graphs/contributors).
-
-[<img src="https://s3-us-west-1.amazonaws.com/rootstrap.com/img/rs.png" width="100"/>](http://www.rootstrap.com)
