@@ -19,8 +19,7 @@ export class SessionService {
     private readonly redisService: RedisService,
     private readonly emailService: EmailService
   ) {}
-
-  private readonly userRepository = getRepository<User>(User);
+  userRepository = getRepository<User>(User);
 
   async signUp(user: User) {
     try {

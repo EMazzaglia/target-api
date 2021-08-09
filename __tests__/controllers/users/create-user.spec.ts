@@ -6,11 +6,16 @@ import { User } from '@entities/user.entity';
 import { API } from '../../utils';
 import { HttpStatusCode } from '@constants/httpStatusCode';
 import { ErrorsMessages } from '@constants/errorMessages';
+import { EmailService } from '@services/email/email.service';
+import { SessionService } from '@services/session.service';
+import { UsersService } from '@services/users.service';
+import { JWTService } from '@services/jwt.service';
+import { RedisService } from '@services/redis.service';
+import { SignUpConfirmationEmail } from '@services/email/SignUpConfirmationEmail';
 
 describe('creating a user', () => {
   it('returns http code 200 and creates the user', async () => {
     const userFields = await factory(User)().make();
-
     const response = await request(app).post(`${API}/users`).send(userFields);
     expect(response.status).toBe(200);
 
@@ -69,5 +74,33 @@ describe('creating a user', () => {
     });
 
     expect(await userRepo.count()).toBe(1);
+  });
+
+  it('produces a call to the emailService', async () => {
+    const userFields = await factory(User)().make();
+    const jwtService = new JWTService();
+    const userService = new UsersService(jwtService);
+    const redisService = new RedisService();
+    const emailService = new EmailService();
+    let confirmation = new SignUpConfirmationEmail(userFields);
+
+    jest.spyOn(emailService, 'sendEmail').mockImplementation(confirmation => {
+      return userFields;
+    });
+
+    const sessionService = new SessionService(
+      userService,
+      redisService,
+      emailService
+    );
+    sessionService.userRepository.save = jest.fn().mockImplementation(() => {
+      return {
+        userFields,
+        id: 20,
+        activationCode: 'activationCode'
+      };
+    });
+    sessionService.signUp(userFields);
+    expect(emailService.sendEmail).toHaveBeenCalled();
   });
 });

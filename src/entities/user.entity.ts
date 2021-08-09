@@ -19,7 +19,7 @@ export class User extends Base {
   gender!: string;
 
   @Column({ default: 'Inactive' })
-  status!: string;
+  status?: string;
 
   @Column()
   activationCode?: string;

@@ -23,8 +23,7 @@ export class EmailService {
 
   async sendEmail(email: SendEmailRequest) {
     try {
-      const emailSent = await this.ses.sendEmail(email).promise();
-      return emailSent;
+      return await this.ses.sendEmail(email).promise();
     } catch (error) {
       throw new HttpError(502, ErrorsMessages.EMAIL_NOT_SENT);
     }
