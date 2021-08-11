@@ -56,5 +56,4 @@ jobs:
         if: github.actor != 'dependabot[bot]'
         run: |
           echo "NODE_PATH=$(which tsc)" >> $GITHUB_ENV
-          ls
-          sonar-scanner -Dproject.settings=sonar.project.properties
+          sonar-scanner
