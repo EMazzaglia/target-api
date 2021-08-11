@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="/Users/emilianomazzaglia/Rootstrap/target-api/__tests__/controllers/users/create-user.spec.ts">
+    <testCase name="creating a user returns http code 200 and creates the user" duration="132"/>
+    <testCase name="creating a user returns http code 400 if email is incorrect" duration="31"/>
+    <testCase name="creating a user returns http code 400 if password is incorrect" duration="28"/>
+    <testCase name="creating a user when repeated email is used to create a user, returns http code 500" duration="196"/>
+    <testCase name="creating a user produces a call to the emailService" duration="4228">
+      <failure message="Error: expect(jest.fn()).toHaveBeenCalled()"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalled()
+
+Expected number of calls: >= 1
+Received number of calls:    0
+    at /Users/emilianomazzaglia/Rootstrap/target-api/__tests__/controllers/users/create-user.spec.ts:104:36
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/emilianomazzaglia/Rootstrap/target-api/__tests__/controllers/users/create-user.spec.ts:5:58)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)]]></failure>
+    </testCase>
+  </file>
+</testExecutions>
