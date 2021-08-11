@@ -1,4 +1,5 @@
 import connection from '@database/connection';
+import { redisClient } from '@server';
 import { useSeeding } from 'typeorm-seeding';
 
 beforeAll(async () => {
@@ -7,6 +8,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await redisClient.quit();
   await connection.close();
 });
 

@@ -1,32 +1,34 @@
-import { Errors } from '@constants/errorMessages';
+import { ErrorsMessages } from '@constants/errorMessages';
 import { Service } from 'typedi';
+import { getRepository } from 'typeorm';
 import { User } from '@entities/user.entity';
 import { UsersService } from '@services/users.service';
-import { getRepository } from 'typeorm';
+import { RedisService } from '@services/redis.service';
 import { AuthInterface } from '@interfaces';
+import { DatabaseError } from '@exception/database.error';
+import { RedisError } from '@exception/redis.error';
+import { UnAuthorizedError } from '@exception/unauthorized.error';
 
 @Service()
 export class SessionService {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    private readonly redisService: RedisService
+  ) {}
 
   private readonly userRepository = getRepository<User>(User);
 
   async signUp(user: User) {
-    let newUser: User;
     try {
       this.userService.hashUserPassword(user);
-      newUser = await this.userRepository.save(user);
+      return await this.userRepository.save(user);
     } catch (error) {
-      throw new Error(error.detail ?? Errors.MISSING_PARAMS);
+      throw new DatabaseError(error.message + ' ' + error.detail);
     }
-    return newUser;
   }
 
   async signIn(input: AuthInterface.ISignInInput) {
     const { email, password } = input;
-    if (!this.userService.givenCredentials({ email, password })) {
-      throw new Error(Errors.MISSING_PARAMS);
-    }
 
     let user: User;
     try {
@@ -35,7 +37,10 @@ export class SessionService {
         .where({ email })
         .getOneOrFail();
     } catch (error) {
-      throw new Error(Errors.INVALID_CREDENTIALS);
+      throw new UnAuthorizedError(
+        ErrorsMessages.INVALID_CREDENTIALS_NAME,
+        ErrorsMessages.INVALID_CREDENTIALS_DESC
+      );
     }
 
     if (
@@ -44,11 +49,22 @@ export class SessionService {
         userPassword: user.password
       })
     ) {
-      throw new Error(Errors.INVALID_CREDENTIALS);
+      throw new UnAuthorizedError(
+        ErrorsMessages.INVALID_CREDENTIALS_NAME,
+        ErrorsMessages.INVALID_CREDENTIALS_DESC
+      );
     }
 
     const token = this.userService.generateToken(user);
     this.userService.hashUserPassword(user);
     return token;
+  }
+
+  logOut(input: AuthInterface.ITokenToBlacklistInput): Promise<number> {
+    const tokenAddedToBlacklist = this.redisService.addTokenToBlacklist(input);
+    if (!tokenAddedToBlacklist) {
+      throw new RedisError(ErrorsMessages.REDIS_ERROR_SET_TOKEN);
+    }
+    return tokenAddedToBlacklist;
   }
 }
